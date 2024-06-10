@@ -1,9 +1,10 @@
 {
   "name": "pixelscale",
-  "publisher": "s saimadhan mohan",
-  "displayName": "px-rem",
-  "description": "converting px to rem based on calculation like 16px/16px : > 1rem",
-  "version": "0.1.0",
+  "publisher": "9bd71a5c-1164-4065-b831-25e708d68710",
+  "displayName": "pxify",
+  "description": "converting 1.px to rem, 2.rem to px, 3.em to px, 4.px to rem 5.rem to em, 6.em to rem, note:Calculation based on a root font-size of 16 pixel.",
+  "version": "0.1.2",
+  "icon":"images/logo1.png",
   "engines": {
     "vscode": "^1.89.0"
   },
@@ -23,24 +24,50 @@
   "contributes": {
     "commands": [
       {
-        "command": "extension.convertPxToRem",
-        "title": "Convert px to REM"
-      }
-    ],
-    "menus": {
-      "editor/context": [
-        {
-          "command": "extension.convertPxToRem",
-          "group": "1_convert",
-          "when": "editorLangId == css || editorLangId == scss"
-        }
-      ]
-    },
-    "keybindings": [
+        "command": "extension.changeBaseFontSize",
+        "title": "Change Base Font Size"
+      },
       {
         "command": "extension.convertPxToRem",
-        "key": "shift+w",
-        "mac": "shift+w",
+        "title": "Convert px to REM"
+      },
+      {
+        "command": "extension.convertPxToEm",
+        "title": "Convert px to EM"
+      }
+    ],
+   "menus": {
+    "editor/context": [
+      {
+        "command": "extension.convertPxToRem",
+        "group": "1_convert",
+        "when": "editorLangId == css || editorLangId == scss"
+    },
+    {
+        "command": "extension.convertPxToEm",
+        "group": "2_convert_em",
+        "when": "editorLangId == css || editorLangId == scss"
+    }
+    ]
+},
+
+    "keybindings": [
+      {
+        "command": "extension.changeBaseFontSize",
+        "key": "ctrl+shift+f",
+        "mac": "cmd+shift+f",
+        "when": "editorLangId == css || editorLangId == scss"
+      },
+      {
+        "command": "extension.convertPxToRem",
+        "key": "ctrl+shift+r",
+        "mac": "cmd+shift+r",
+        "when": "editorLangId == css || editorLangId == scss"
+      },
+      {
+        "command": "extension.convertPxToEm",
+        "key": "ctrl+shift+e",
+        "mac": "cmd+shift+e",
         "when": "editorLangId == css || editorLangId == scss"
       }
     ]
