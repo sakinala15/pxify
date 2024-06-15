@@ -2,13 +2,13 @@
   "name": "pixelscale",
   "publisher": "9bd71a5c-1164-4065-b831-25e708d68710",
   "displayName": "pxify",
-  "description": "converting 1.px to rem, 2.rem to px, 3.em to px, 4.px to rem 5.rem to em, 6.em to rem, note:Calculation based on a root font-size of 16 pixel.",
+  "description": "pxify works for conversion of pixels to REM/EM and vice versa in only css/scss/sass file.",
   "version": "0.1.2",
   "icon":"images/logo1.png",
   "engines": {
     "vscode": "^1.89.0"
   },
-  "categories": [
+ "categories": [
     "Other"
   ],
   "license": "MIT",
@@ -16,24 +16,50 @@
     "type": "",
     "url": ""
   },
+  "keywords":[
+    "rem",
+    "px rem",
+    "px to rem",
+    "px2rem",
+    "rem to px",
+    "css rem",
+    "vw",
+    "px to vw",
+    "vw to px",
+    "em to px",
+    "px to em",
+    "em",
+    "px to vh",
+    "vh to px"
+  ],
   "activationEvents": [
     "onLanguage:css",
-    "onLanguage:scss"
+    "onLanguage:scss",
+    "onLanguage:sass"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "extension.changeBaseFontSize",
-        "title": "Change Base Font Size"
+        "command": "extension.convertPxToRem",
+        "title": "pxify - rem"
       },
       {
-        "command": "extension.convertPxToRem",
-        "title": "Convert px to REM"
+        "command": "extension.changeBaseFontSize",
+        "title": "pxify root font size"
       },
+     
       {
         "command": "extension.convertPxToEm",
-        "title": "Convert px to EM"
+        "title": "pxify - em"
+      },
+      {
+        "command": "extension.convertPxToVh",
+        "title": "pxify - vh"
+      },
+      {
+        "command": "extension.convertPxToVw",
+        "title": "pxify - vw"
       }
     ],
    "menus": {
@@ -41,12 +67,22 @@
       {
         "command": "extension.convertPxToRem",
         "group": "1_convert",
-        "when": "editorLangId == css || editorLangId == scss"
+        "when": "editorLangId == css || editorLangId == scss || editorLangId == sass"
     },
     {
         "command": "extension.convertPxToEm",
-        "group": "2_convert_em",
-        "when": "editorLangId == css || editorLangId == scss"
+        "group": "1_convert",
+        "when": "editorLangId == css || editorLangId == scss || editorLangId == sass"
+    },
+    {
+      "command": "extension.convertPxToVw",
+      "group": "1_convert",
+      "when": "editorLangId == css || editorLangId == scss || editorLangId == sass"
+    },
+    {
+      "command": "extension.convertPxToVh",
+      "group": "1_convert",
+      "when": "editorLangId == css || editorLangId == scss || editorLangId == sass"
     }
     ]
 },
@@ -56,19 +92,31 @@
         "command": "extension.changeBaseFontSize",
         "key": "ctrl+shift+f",
         "mac": "cmd+shift+f",
-        "when": "editorLangId == css || editorLangId == scss"
+        "when": "editorLangId == css || editorLangId == scss || editorLangId == sass"
       },
       {
         "command": "extension.convertPxToRem",
         "key": "ctrl+shift+r",
         "mac": "cmd+shift+r",
-        "when": "editorLangId == css || editorLangId == scss"
+        "when": "editorLangId == css || editorLangId == scss || editorLangId == sass"
       },
       {
         "command": "extension.convertPxToEm",
         "key": "ctrl+shift+e",
         "mac": "cmd+shift+e",
-        "when": "editorLangId == css || editorLangId == scss"
+        "when": "editorLangId == css || editorLangId == scss || editorLangId == sass"
+      },
+      {
+        "command": "extension.convertPxToVw",
+        "key": "ctrl+shift+w",
+        "mac": "cmd+shift+w",
+        "when": "editorLangId == css || editorLangId == scss || editorLangId == sass"
+      },
+      {
+        "command": "extension.convertPxToVh",
+        "key": "ctrl+shift+h",
+        "mac": "cmd+shift+h",
+        "when": "editorLangId == css || editorLangId == scss || editorLangId == sass"
       }
     ]
   },

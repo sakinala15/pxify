@@ -1,7 +1,7 @@
-const vscode = require('vscode');
+import * as vscode from 'vscode';
 
 // Default base font size
-let baseFontSize: number = 16;
+let baseFontSize: number = 16; let viewportheight = 1080; let viewportwidth = 1920;
 
 function changeBaseFontSize() {
     vscode.window.showInputBox({
@@ -51,7 +51,87 @@ function convertEmToPx(emValue: any): any {
     });
 }
 
-function activate(context: any) {
+function convertPxToVh(text: any) {
+    return text.replace(/(\d*\.?\d+)px/g, (match: any, pxValue: any) => {
+        const vhValue = (parseFloat(pxValue) / viewportheight) * 100;
+        return `${vhValue}vh`;
+    });
+   
+}
+
+function convertVhToPx(value: any): any {
+    return value.replace(/(\d*\.?\d+)vh/g, (match: any, pxValue: any) => {
+        const vhValue = (parseFloat(pxValue)) * viewportheight/100;
+        return `${vhValue}px`;
+    });
+}
+
+function convertPxToVw(value: any): any {
+    return value.replace(/(\d*\.?\d+)px/g, (match: any, pxValue: any) => {
+        const vhValue = (parseFloat(pxValue) / viewportwidth) * 100;
+        return `${vhValue}vw`;
+    });
+}
+
+function convertVwToPx(value: any): any {
+    return value.replace(/(\d*\.?\d+)vw/g, (match: any, pxValue: any) => {
+        const vhValue = (parseFloat(pxValue)) * viewportwidth/100;
+        return `${vhValue}px`;
+    });
+}
+
+function activate(context: vscode.ExtensionContext) {
+    // px to vw - vice versa
+     let disposableVw = vscode.commands.registerCommand('extension.convertPxToVw', () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            return;
+        }
+        const document = editor.document;
+         // Check if the file is a CSS or SCSS file
+         if (document.languageId !== 'css' && document.languageId !== 'scss' && document.languageId !== 'sass') {
+            vscode.window.showErrorMessage('This command is only available for CSS and SCSS files.');
+            return;
+        }
+        const selection = editor.selection;
+        const text = document.getText(selection);
+        let convertedText: any;
+        if (text.indexOf('px') !== -1) {
+            convertedText = convertPxToVw(text);
+        } else if (text.indexOf('vw') !== -1) {
+            convertedText = convertVwToPx(text);
+        }
+        
+        editor.edit((editBuilder: any) => {
+            editBuilder.replace(selection, convertedText);
+        });
+    });
+// px to vh - vice versa
+    let disposableVh = vscode.commands.registerCommand('extension.convertPxToVh', () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            return;
+        }
+        const document = editor.document;
+         // Check if the file is a CSS or SCSS file
+         if (document.languageId !== 'css' && document.languageId !== 'scss' && document.languageId !== 'sass') {
+            vscode.window.showErrorMessage('This command is only available for CSS and SCSS files.');
+            return;
+        }
+        const selection = editor.selection;
+        const text = document.getText(selection);
+        let convertedText: any;
+        if (text.indexOf('px') !== -1) {
+            convertedText = convertPxToVh(text);
+        } else if (text.indexOf('vh') !== -1) {
+            convertedText = convertVhToPx(text);
+        }
+        
+        editor.edit((editBuilder: any) => {
+            editBuilder.replace(selection, convertedText);
+        });
+    });
+    // px to rem - vice versa
     let disposableRem = vscode.commands.registerCommand('extension.convertPxToRem', () => {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
@@ -59,7 +139,7 @@ function activate(context: any) {
         }
         const document = editor.document;
         // Check if the file is a CSS or SCSS file
-        if (document.languageId !== 'css' && document.languageId !== 'scss') {
+        if (document.languageId !== 'css' && document.languageId !== 'scss' && document.languageId !== 'sass') {
             vscode.window.showErrorMessage('This command is only available for CSS and SCSS files.');
             return;
         } 
@@ -75,8 +155,7 @@ function activate(context: any) {
             editBuilder.replace(selection, convertedText);
         });
     });
-
-    // px To em
+    // px to em - vice versa
     let disposableEm = vscode.commands.registerCommand('extension.convertPxToEm', () => {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
@@ -84,7 +163,7 @@ function activate(context: any) {
         }
         const document = editor.document;
          // Check if the file is a CSS or SCSS file
-         if (document.languageId !== 'css' && document.languageId !== 'scss') {
+         if (document.languageId !== 'css' && document.languageId !== 'scss' && document.languageId !== 'sass') {
             vscode.window.showErrorMessage('This command is only available for CSS and SCSS files.');
             return;
         }
@@ -101,21 +180,11 @@ function activate(context: any) {
             editBuilder.replace(selection, convertedText);
         });
     });
+    // px to vh - vice versa
+   
+    
     let disposableChangeFontSize = vscode.commands.registerCommand('extension.changeBaseFontSize', changeBaseFontSize);
    
-    context.subscriptions.push(disposableRem, disposableEm, disposableChangeFontSize,vscode.languages.registerCompletionItemProvider('scss', {
-        
-        provideCompletionItems(document: any, position: any) {
-          const linePrefix = document.lineAt(position).text.substr(0, position.character + 1);
-          if (linePrefix.endsWith('px')) {
-            const suggestion = new vscode.CompletionItem('Convert px to REM', vscode.CompletionItemKind.Method);
-            // Insert snippet for flexibility and user customization
-            suggestion.insertText = new vscode.SnippetString('convertPxToRem($SELECTED_TEXT)'); // Placeholder for px value
-            suggestion.sortText = vscode.CompletionItemKind.Method;
-            return [suggestion];
-          }
-          return [];
-        }
-      }));
+    context.subscriptions.push(disposableVw,disposableVh,disposableRem, disposableEm,disposableChangeFontSize);
 }
 exports.activate = activate;
