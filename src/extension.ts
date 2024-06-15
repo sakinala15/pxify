@@ -1,7 +1,9 @@
+import { parse } from 'path';
 import * as vscode from 'vscode';
 
 // Default base font size
 let baseFontSize: number = 16; let viewportheight = 1080; let viewportwidth = 1920;
+
 
 function changeBaseFontSize() {
     vscode.window.showInputBox({
@@ -18,6 +20,38 @@ function changeBaseFontSize() {
         if (value) {
             baseFontSize = parseInt(value);
             vscode.window.showInformationMessage(`Base font size changed to ${baseFontSize}px.`);
+        }
+    });
+}
+
+function changeviewportheight_width() {
+    vscode.window.showInputBox({
+        prompt: 'Enter the new viewport height (in pixels)',
+        value: viewportheight.toString(),
+        validateInput: (value: string) => {
+            const parsedValue = parseInt(value);
+            if (isNaN(parsedValue) || parsedValue <= 0) {
+                return 'Please enter a valid positive number.';
+            }
+            return null;
+        }
+    }).then((value: any) => {
+        if (value) {
+            viewportheight = (value);
+            vscode.window.showInputBox({
+                prompt: 'Enter the new viewport width (in pixels)',
+                value: viewportwidth.toString(),
+                validateInput: (value: string) => {
+                    const parsedValue = parseInt(value);
+                    if (isNaN(parsedValue) || parsedValue <= 0) {
+                        return 'Please enter a valid positive number.';
+                    }
+                    return null;
+                }
+            }).then((value: any) => {
+                viewportwidth = (value);
+                vscode.window.showInformationMessage(`Viewport dimensions updated to ${viewportwidth}x${viewportheight} pixels.`);
+            });
         }
     });
 }
@@ -81,6 +115,7 @@ function convertVwToPx(value: any): any {
 }
 
 function activate(context: vscode.ExtensionContext) {
+    
     // px to vw - vice versa
      let disposableVw = vscode.commands.registerCommand('extension.convertPxToVw', () => {
         const editor = vscode.window.activeTextEditor;
@@ -184,7 +219,8 @@ function activate(context: vscode.ExtensionContext) {
    
     
     let disposableChangeFontSize = vscode.commands.registerCommand('extension.changeBaseFontSize', changeBaseFontSize);
+    let disposableChangeviewportheight_width = vscode.commands.registerCommand('extension.changeviewportvh_vw', changeviewportheight_width);
    
-    context.subscriptions.push(disposableVw,disposableVh,disposableRem, disposableEm,disposableChangeFontSize);
+    context.subscriptions.push(disposableVw,disposableVh,disposableRem, disposableEm,disposableChangeFontSize,disposableChangeviewportheight_width);
 }
 exports.activate = activate;

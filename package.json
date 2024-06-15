@@ -39,6 +39,7 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
+   
     "commands": [
       {
         "command": "extension.convertPxToRem",
@@ -47,6 +48,10 @@
       {
         "command": "extension.changeBaseFontSize",
         "title": "pxify root font size"
+      },
+      {
+        "command": "extension.changeviewportvh_vw",
+        "title": "pxify viewport vh/vw"
       },
      
       {
@@ -92,6 +97,12 @@
         "command": "extension.changeBaseFontSize",
         "key": "ctrl+shift+f",
         "mac": "cmd+shift+f",
+        "when": "editorLangId == css || editorLangId == scss || editorLangId == sass"
+      },
+      {
+        "command": "extension.changeviewportvh_vw",
+        "key": "ctrl+shift+z",
+        "mac": "cmd+shift+z",
         "when": "editorLangId == css || editorLangId == scss || editorLangId == sass"
       },
       {
