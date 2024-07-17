@@ -2,14 +2,17 @@
   "name": "pixelscale",
   "publisher": "9bd71a5c-1164-4065-b831-25e708d68710",
   "displayName": "pxify",
-  "description": "pxify works for conversion of pixels to REM/EM and vice versa in only css/scss/sass file.",
-  "version": "0.1.2",
+  "description": "Pxify is a powerful Visual Studio Code extension that simplifies the process of converting pixel units to rem, em, vh, and vw units in CSS, SCSS, and SASS files. With its intuitive shortcuts and features, Pxify streamlines your workflow and ensures consistent unit usage throughout your project.",
+  "version": "0.3.1",
   "icon":"images/logo1.png",
   "engines": {
     "vscode": "^1.89.0"
   },
  "categories": [
     "Other"
+  ],
+  "files":[
+    "images/demo.mp4"
   ],
   "license": "MIT",
   "repository": {
@@ -39,7 +42,21 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
-   
+    "completion": [
+      {
+          "type": "keyword",
+          "language": "html",
+          "pattern": "\\bpx\\b",
+          "items": [
+              {
+                  "label": "Extension.ConvertPxToVh",
+                  "kind": "keyword",
+                  "insertText": "Extension.ConvertPxToVh",
+                  "documentation": "Converts px to vh"
+              }
+          ]
+      }
+  ],
     "commands": [
       {
         "command": "extension.convertPxToRem",

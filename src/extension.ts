@@ -95,7 +95,7 @@ function convertPxToVh(text: any) {
 
 function convertVhToPx(value: any): any {
     return value.replace(/(\d*\.?\d+)vh/g, (match: any, pxValue: any) => {
-        const vhValue = (parseFloat(pxValue)) * viewportheight/100;
+        const vhValue = (parseFloat(pxValue) * viewportheight)/100;
         return `${vhValue}px`;
     });
 }
@@ -114,8 +114,15 @@ function convertVwToPx(value: any): any {
     });
 }
 
+
+
 function activate(context: vscode.ExtensionContext) {
     
+    // let disposable = vscode.languages.registerCompletionItemProvider(
+    //     { scheme: 'file', language: 'scss' }, // Adjust for SCSS/SASS if needed
+    //     new MyCompletionProvider(),
+    //     'px' // Trigger completion on typing 'px'
+    // );
     // px to vw - vice versa
      let disposableVw = vscode.commands.registerCommand('extension.convertPxToVw', () => {
         const editor = vscode.window.activeTextEditor;
